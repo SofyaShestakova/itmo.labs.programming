@@ -10,10 +10,10 @@ public class SyntaxBundle_sp extends ListResourceBundle {
             {"Литовский","Lituano"},
             {"Испанский","español"},
             {"клиент", "cliente"},
-            {"Лабораторная", "laboratorio"},
+            {"Лабораторная №8 (клиент)", "laboratorio №8 (cliente)"},
             {"Название","el nombre"},
             {"Автор","el autor"},
-            {"Информация о новом элементе","Nueva información del artículo"},
+            {"Информация_о_новом_элементе","Nueva información del artículo"},
             {"Красненький","Poco rojo"},
             {"Зеленый","Verde"},
             {"Синий","Azul"},
@@ -28,7 +28,11 @@ public class SyntaxBundle_sp extends ListResourceBundle {
             {"Генерировать","generar"},
             {"Обновить","para actualizar"},
             {"Начать анимацию","comienza la animación"},
-            {"Остановить анимацию","detener la animación"}
+            {"Остановить анимацию","detener la animación"},
+            {"Цвет", "colorear"},
+            {"Жанр", "género"},
+            {"Дата создания:","fecha de creación"}
+
     };
 
     public String[][] getContents(){

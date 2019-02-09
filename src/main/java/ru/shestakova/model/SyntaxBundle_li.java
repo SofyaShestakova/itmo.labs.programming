@@ -10,10 +10,11 @@ public class SyntaxBundle_li extends ListResourceBundle {
             {"Литовский","Lietuvių"},
             {"Испанский","ispanų"},
             {"клиент","klientas"},
+            {"Лабораторная №8 (клиент)", "laboratorija №8 (klientas)"},
             {"Лабораторная","laboratorija"},
             {"Название","pavadinimą"},
             {"Автор","autorius"},
-            {"Информация о новом элементе","nauja elemento informacija"},
+            {"Информация_о_новом_элементе","nauja elemento informacija"},
             {"Красненький","mažai raudona"},
             {"Зеленый","žalia"},
             {"Синий","mėlyna"},
@@ -28,7 +29,10 @@ public class SyntaxBundle_li extends ListResourceBundle {
             {"Генерировать","generuoti"},
             {"Обновить","atnaujinti"},
             {"Начать анимацию","pradėti animaciją"},
-            {"Остановить анимацию","sustabdyti animaciją"}
+            {"Остановить анимацию","sustabdyti animaciją"},
+            {"Цвет","spalva"},
+            {"Жанр","žanras"},
+            {"Дата создания:","kūrimo data:"}
 
     };
 

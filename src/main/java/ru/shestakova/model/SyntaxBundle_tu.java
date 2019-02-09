@@ -10,10 +10,10 @@ public class SyntaxBundle_tu extends ListResourceBundle {
             {"Литовский","Litvanyalı"},
             {"Испанский","İspanyolca"},
             {"клиент","müşteri"},
-            {"Лабораторная","laboratuvar"},
+            {"Лабораторная №8 (клиент)", "laboratuvar №8 (müşteri)"},
             {"Название","isim"},
             {"Автор","yazar"},
-            {"Информация о новом элементе","yeni ürün bilgisi"},
+            {"Информация_о_новом_элементе","yeni ürün bilgisi"},
             {"Красненький","küçük kırmızı"},
             {"Зеленый","yeşil"},
             {"Синий","mavi"},
@@ -28,7 +28,10 @@ public class SyntaxBundle_tu extends ListResourceBundle {
             {"Генерировать","üretmek"},
             {"Обновить","güncellemek"},
             {"Начать анимацию","animasyonu başlat"},
-            {"Остановить анимацию","animasyonu durdur"}
+            {"Остановить анимацию","animasyonu durdur"},
+            {"Цвет", "renk"},
+            {"Жанр", "tarz"},
+            {"Дата создания:","oluşturma tarihi"}
 
     };
 

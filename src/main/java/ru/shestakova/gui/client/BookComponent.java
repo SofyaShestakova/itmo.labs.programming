@@ -5,6 +5,8 @@ import javafx.scene.layout.Pane;
 import ru.shestakova.gui.AbstractBookComponent;
 import ru.shestakova.model.Book;
 import ru.shestakova.model.BookColor;
+import ru.shestakova.model.BookGenre;
+import ru.shestakova.model.LabLocale;
 
 public class BookComponent extends AbstractBookComponent {
 
@@ -23,9 +25,9 @@ public class BookComponent extends AbstractBookComponent {
     Tooltip tooltip = new Tooltip(
         book.getAuthor()
             + " \"" + book.getName() + "\""
-            + " | Цвет: " + BookColor.getByColor(book.getColor())
-            + " | Жанр: " + book.getGenre().getGengeName()
-            + " | Дата создания: " + book.getCreationTime ()
+                + " | " + LabLocale.getInstance().getString("Цвет") + " " + BookColor.getByColor(book.getColor())
+                + " | " + LabLocale.getInstance().getString("Жанр") + " " + book.getGenre ().getGengeName()
+                + " | " + LabLocale.getInstance().getString("Дата создания:") + " " + book.getCreationTime ()
     );
     Tooltip.install(pane, tooltip);
 

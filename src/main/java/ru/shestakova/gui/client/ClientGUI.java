@@ -112,12 +112,14 @@ public class ClientGUI extends Application {
 
         labLocale.addLocaleChangeHandler(bundle -> {
             refreshButton.setText(bundle.getString("Обновить"));
-            generateObjectsButton.setText(bundle.getString("Генерировать"));saveButton.setText(bundle.getString("Сохранить"));
+            generateObjectsButton.setText(bundle.getString("Генерировать"));
             startEffectButton.setText(bundle.getString("Начать анимацию"));
             stopEffectButton.setText(bundle.getString("Остановить анимацию"));
-            bookAuthorField.setText(bundle.getString("Автор"));
-            bookNameField.setText(bundle.getString("Название"));
+            bookAuthorField.setPromptText (bundle.getString("Автор"));
+            bookNameField.setPromptText (bundle.getString("Название"));
+
         });
+
     }
 
     @Override
@@ -146,12 +148,17 @@ public class ClientGUI extends Application {
 
         // Отрисовываем
         primaryStage.setScene (new Scene (rootNode, INITIAL_WIDTH, INITIAL_HEIGHT));
-        primaryStage.setTitle (WINDOW_TITLE);
+        primaryStage.setTitle (labLocale.getString ("Лабораторная №8 (клиент)"));
         primaryStage.setResizable (false);
         primaryStage.setFullScreen (false);
 
         primaryStage.centerOnScreen ( );
         primaryStage.show ( );
+
+        labLocale.addLocaleChangeHandler(bundle -> {
+            primaryStage.setTitle (bundle.getString ("Лабораторная №8 (клиент)"));
+
+        });
 
         Runtime.getRuntime ( ).addShutdownHook (new Thread (() -> {
             api.save (null);
@@ -292,7 +299,7 @@ public class ClientGUI extends Application {
         grid.add (addVBox, 1, 0);
         grid.add (view, 0, 0);
 
-        Label label = new Label (labLocale.getString ("Информация о новом элементе"));
+        Label label = new Label (labLocale.getString ("Информация_о_новом_элементе"));
 
         addVBox.getChildren ( )
                 .addAll (label, bookNameField, bookAuthorField, bookSizeChoiceBox, colorComboBox,
@@ -305,7 +312,7 @@ public class ClientGUI extends Application {
         VBox.setMargin (colorComboBox, DEFAULT_MARGIN);
         VBox.setMargin (genreSpinner, DEFAULT_MARGIN);
         labLocale.addLocaleChangeHandler(bundle -> {
-            label.setText(bundle.getString("Информация о новом элементе"));
+            label.setText(bundle.getString("Информация_о_новом_элементе"));
         });
 
         return addVBox;

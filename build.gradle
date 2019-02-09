@@ -1,0 +1,38 @@
+group 'ru.shestakova'
+version '0.1'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = 'ru.shestakova.server.ServerMain'
+//mainClassName = 'ru.shestakova.client.ClientMain'
+jar {
+    baseName = 'Server'
+    version = '0.1'
+    manifest {
+        attributes "Main-Class": "$mainClassName"
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile("org.postgresql:postgresql:42.2.2")
+    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.11.1'
+    compile group: 'org.codehaus.jettison', name: 'jettison', version: '1.2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
+}
+
+compileJava {
+    options.compilerArgs += ["-XDignore.symbol.file", "-Xdoclint:none", "-Xlint:none", "-nowarn"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}

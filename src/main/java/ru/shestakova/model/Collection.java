@@ -3,6 +3,7 @@ package ru.shestakova.model;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.Hashtable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Collection implements Serializable {
@@ -154,6 +155,7 @@ public class Collection implements Serializable {
   public int getSize() {
     return this.storage.size();
   }
+
 
 
 }

@@ -8,6 +8,8 @@ import ru.shestakova.model.BookColor;
 import ru.shestakova.model.BookGenre;
 import ru.shestakova.model.LabLocale;
 
+
+
 public class BookComponent extends AbstractBookComponent {
 
   public BookComponent(Book book) {
@@ -30,7 +32,6 @@ public class BookComponent extends AbstractBookComponent {
                 + " | " + LabLocale.getInstance().getString("Дата создания:") + " " + book.getCreationTime ()
     );
     Tooltip.install(pane, tooltip);
-
     getChildren().add(pane);
   }
 

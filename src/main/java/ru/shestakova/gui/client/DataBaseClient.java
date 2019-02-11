@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class DataBaseClient<T> {
         }
     }
 
-    public int createTable(String tableName, Class itemClass) throws SQLException {
+    public  int createTable(String tableName, Class itemClass) throws SQLException {
         String query = format("CREATE TABLE %s (key VARCHAR(4096) PRIMARY KEY, %s);",
                 normalizeTableName(tableName),
                 Arrays.stream(itemClass.getDeclaredFields())
@@ -63,7 +64,7 @@ public class DataBaseClient<T> {
                                 type = "integer";
                             } else if (field.getType() == Boolean.class) {
                                 type = "boolean";
-                            } else if (field.getType() == OffsetDateTime.class) {
+                            } else if (field.getType() == ZonedDateTime.class) {
                                 type = "TIMESTAMP";
                             } else if (field.getType() == BookColor.class) {
                                 type = "VARCHAR(50)";
@@ -224,7 +225,7 @@ public class DataBaseClient<T> {
                     || field.getType() == Integer.class
                     || field.getType() == Boolean.class) {
                 value = field.get(item).toString();
-            } else if (field.getType() == OffsetDateTime.class
+            } else if (field.getType() == ZonedDateTime.class
                     || field.getType() == BookColor.class
                     || field.getType() == String.class) {
                 value = "'" + field.get(item).toString() + "'";

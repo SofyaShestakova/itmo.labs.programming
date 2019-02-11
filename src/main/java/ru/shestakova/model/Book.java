@@ -1,5 +1,8 @@
 package ru.shestakova.model;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 import java.awt.Color;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -11,8 +14,8 @@ public class Book implements Serializable {
   private String author;
 
   private int height;
-  private int width;
-  private int pages;
+  private int  width;
+  private  int pages;
 
 
   private Color color;

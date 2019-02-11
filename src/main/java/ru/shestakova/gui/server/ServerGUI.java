@@ -1,18 +1,6 @@
 package ru.shestakova.gui.server;
-
-import static ru.shestakova.utils.GUIUtils.createDialogWindow;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.javafx.collections.ObservableListWrapper;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.time.ZonedDateTime;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ForkJoinPool;
-import java.util.stream.Collectors;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -20,25 +8,27 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.shestakova.gui.client.DataBaseClient;
-import ru.shestakova.model.Book;
-import ru.shestakova.model.BookColor;
-import ru.shestakova.model.BookGenre;
-import ru.shestakova.model.BookSize;
-import ru.shestakova.model.Collection;
+import ru.shestakova.model.*;
 import ru.shestakova.server.ApplicationAPI;
 import ru.shestakova.server.ServerApplicationAPI;
 import ru.shestakova.server.ServerMain;
+
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.sql.SQLException;
+import java.time.ZonedDateTime;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.Collectors;
+
+import static ru.shestakova.utils.GUIUtils.createDialogWindow;
 
 
 
@@ -57,6 +47,8 @@ public class ServerGUI extends Application {
 
   private ForkJoinPool pool = new ForkJoinPool();
   private ApplicationAPI api;
+  private Collection collection;
+  private TableView <Book> collectionTable;
 
   private BookComponent chosenBookComponent;
 
@@ -96,6 +88,7 @@ public class ServerGUI extends Application {
   private static ObjectMapper mapper = new ObjectMapper()
           .findAndRegisterModules();
   private static DataBaseClient<Book> databaseClient = DataBaseClient.getInstance();
+
 
   {
     pool.submit(() -> {
@@ -223,6 +216,11 @@ public class ServerGUI extends Application {
       Book book = parseBook();
       if (book != null) {
         api.getCollection().addBook(book);
+        try {
+          databaseClient.createItem ("BookCollection",String.valueOf (book.hashCode ()), book);
+        } catch (SQLException e) {
+          e.printStackTrace ( );
+        }
       } else {
         createDialogWindow("Ошибка", "Заполните поля правильно!").showAndWait();
       }
@@ -237,6 +235,12 @@ public class ServerGUI extends Application {
 
       String pagesStr = bookPagesAmountTextField.getText();
       int pages;
+      try {
+        databaseClient.deleteItem ("BookCollection","book.hashcode()");
+      } catch (SQLException e) {
+        e.printStackTrace ( );
+      }
+
       try {
         pages = Integer.parseInt(pagesStr);
       } catch (NumberFormatException ex) {
@@ -283,10 +287,13 @@ public class ServerGUI extends Application {
 
     deleteLessButton.setOnMouseClicked(
         event -> pool.submit(() -> api.removeLower(chosenBookComponent.getBook())));
+
   }
 
+
+
   @Override
-  public void start(Stage primaryStage) {
+  public void start(Stage primaryStage) throws SQLException {
     stage = primaryStage;
 
     final VBox rootNode = new VBox(createLoginBox());
@@ -310,6 +317,11 @@ public class ServerGUI extends Application {
       primaryStage.centerOnScreen();
       primaryStage.show();
     }
+    if( !databaseClient.isTableExist ("BookCollection")
+       ){
+      databaseClient.createTable ("BookCollection",Book.class);
+    }
+
   }
 
   private Book parseBook() {

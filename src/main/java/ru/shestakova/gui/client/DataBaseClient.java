@@ -1,21 +1,21 @@
 package ru.shestakova.gui.client;
 
-import ru.shestakova.model.BookColor;
 import ru.shestakova.model.BookGenre;
 import ru.shestakova.model.SqlHelper;
 
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static ru.shestakova.model.BookColor.getOrdinal1;
 import static ru.shestakova.model.BookGenre.getOrdinal;
 
 
@@ -67,7 +67,7 @@ public class DataBaseClient<T> {
                                 type = "boolean";
                             } else if (field.getType ( ) == ZonedDateTime.class) {
                                 type = "TIMESTAMP";
-                            } else if (field.getType ( ) == BookColor.class) {
+                            } else if (field.getType ( ) == Color.class) {
                                 type = "integer";
                             } else if (field.getType ( ) == String.class) {
                                 type = "VARCHAR(4096)";
@@ -93,7 +93,7 @@ public class DataBaseClient<T> {
 
     public int createItem(String tableName, String newKey, Object newItem) throws SQLException {
         Class itemClass = newItem.getClass ( );
-        String query = format("INSERT INTO %s (key, %s) VALUES ('%s', %s)",
+        String query = format ("INSERT INTO %s (key, %s) VALUES ('%s', %s)",
                 normalizeTableName (tableName),
                 getFieldsNames (itemClass),
                 newKey,
@@ -184,9 +184,16 @@ public class DataBaseClient<T> {
                                 field.set (item, resultSet.getInt (field.getName ( )));
                             } else if (field.getType ( ) == Boolean.class) {
                                 field.set (item, resultSet.getBoolean (field.getName ( )));
-                            } else if (field.getType ( ) == ZonedDateTime.class) ;
-                                //else if (field.getType() == BookColor.class) {
-                                // field.set(item, new BookColor(resultSet.getString(field.getName())));}
+                            } else if (field.getType ( ) == ZonedDateTime.class) {
+                                field.set (item, resultSet.getTimestamp (field.getName ( )).toLocalDateTime ( ));
+                            } else if (field.getType ( ) == Color.class) {
+                                field.set (item, new Color (resultSet.getInt (field.getName ( ))));
+                            }
+                            else if (field.getType ( ) == BookGenre.class) {
+                                field.set (item, resultSet.getInt(field.getName ()));
+                            }
+                            //else if (field.getType() == BookColor.class) {
+                            // field.set(item, new BookColor(resultSet.getString(field.getName())));}
                             else if (field.getType ( ) == String.class) {
                                 field.set (item, resultSet.getString (field.getName ( )));
                             }
@@ -228,16 +235,16 @@ public class DataBaseClient<T> {
                     || field.getType ( ) == Integer.class
                     || field.getType ( ) == Boolean.class) {
                 value = field.get (item).toString ( );
-            } else if (field.getType ( ) == ZonedDateTime.class
-                    || field.getType ( ) == String.class) {
+            } else if (field.getType ( ) == String.class) {
                 value = "'" + field.get (item).toString ( ) + "'";
-            } else if (
-                    field.getType ( ) == BookGenre.class) {
+            } else if (field.getType ( ) == BookGenre.class) {
                 value = String.valueOf (getOrdinal ( ));
-            }
-            else if (
-                    field.getType ( ) == BookColor.class) {
-                value = String.valueOf (getOrdinal1 ( ));
+            } else if (field.getType ( ) == ZonedDateTime.class) {
+                ZonedDateTime date = (ZonedDateTime) field.get (item);
+                value = "to_timestamp('" + date.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss") )+ "', 'yyyy-mm-dd hh24:mi:ss')";
+            } else if (field.getType ( ) == Color.class) {
+                Color color = (Color) field.get (item);
+                value = String.valueOf (color.getRGB ( ));
             }
             field.setAccessible (false);
         } catch (IllegalAccessException e) {

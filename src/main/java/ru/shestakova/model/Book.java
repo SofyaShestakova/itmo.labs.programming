@@ -2,7 +2,7 @@ package ru.shestakova.model;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -16,16 +16,16 @@ public class Book implements Serializable {
 
 
   private Color color;
-  private ZonedDateTime creationTime;
+  private LocalDateTime creationTime;
   private BookGenre genre;
 
 
-  public Book (String name, String author, Integer pages, BookSize size, BookColor color, BookGenre genre, ZonedDateTime creationTime) {
+  public Book (String name, String author, Integer pages, BookSize size, BookColor color, BookGenre genre, LocalDateTime creationTime) {
     this(name, author, pages, size.getHeight(), size.getWidth(), color.getColor (), genre,creationTime);
   }
 
   public Book(String name, String author, Integer pages, Integer height, Integer width,
-      Color color, BookGenre genre, ZonedDateTime creationTime) {
+      Color color, BookGenre genre, LocalDateTime creationTime) {
     this.name = name;
     this.author = author;
     this.height = height;
@@ -35,8 +35,9 @@ public class Book implements Serializable {
     this.genre = genre;
     this.creationTime = creationTime;
   }
-  Book(){
-    creationTime = ZonedDateTime.now ();
+
+ public  Book(){
+    creationTime = LocalDateTime.now ();
   }
 
   public String getName() {
@@ -71,7 +72,7 @@ public class Book implements Serializable {
     this.color = color;
   }
 
-  public ZonedDateTime getCreationTime() {
+  public LocalDateTime getCreationTime() {
     return creationTime;
   }
 

@@ -2,6 +2,7 @@ package ru.shestakova.utils;
 
 import ru.shestakova.model.*;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayDeque;
 import java.util.List;
@@ -25,7 +26,7 @@ public class CollectionUtils {
                 BookSize.values ( )[(int) (BookSize.values ( ).length * Math.random ( ))],
                 BookColor.values ( )[(int) (BookColor.values ( ).length * Math.random ( ))],
                 BookGenre.values ( )[(int) (1 + Math.random ( ) * (BookGenre.values ( ).length - 1))],
-                ZonedDateTime.now());
+                LocalDateTime.now());
     }
 
     private static String getRandomString(int width) {

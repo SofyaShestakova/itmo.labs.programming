@@ -1,6 +1,7 @@
 package ru.shestakova.utils;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import org.codehaus.jettison.json.JSONException;
@@ -27,7 +28,7 @@ public class JSONUtils {
     String name, author;
     int height, width, pages, rgb;
     BookGenre genre;
-    ZonedDateTime creationTime;
+    LocalDateTime creationTime;
     try {
       name = obj.getString("name");
       author = obj.getString("author");
@@ -36,7 +37,7 @@ public class JSONUtils {
       pages = obj.getInt("pages");
       rgb = obj.getInt("rgb");
       genre = BookGenre.fromOrdinal (obj.getInt("genre"));
-      creationTime = ZonedDateTime.now ();
+      creationTime = LocalDateTime.now ();
 
     } catch (JSONException e) {
       System.err.println("Could not find all required fields in given JSON");

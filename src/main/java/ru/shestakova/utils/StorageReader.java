@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Scanner;
@@ -79,7 +80,7 @@ public class StorageReader {
       int pages = Integer.parseInt(attrs.getNamedItem("pages").getTextContent());
       int rgb = Integer.parseInt(attrs.getNamedItem("rgb").getTextContent());
 
-      Book book = new Book(name, author, pages, height, width, new Color(rgb), genre, ZonedDateTime.now ());
+      Book book = new Book(name, author, pages, height, width, new Color(rgb), genre, LocalDateTime.now ());
       collection.addBook(book);
     }
     scanner.close();

@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public enum BookGenre {
-  NONE(-1,() -> {return LabLocale.getInstance().getString("");}),
+  NONE(-1,() -> ""),
   HORROR(0,() -> {return LabLocale.getInstance().getString("Хоррор");}),
   ADVENTURE(1,() -> {return LabLocale.getInstance().getString("Путешествие");}),
   SCIENCE_FICTION(2,() -> {return LabLocale.getInstance().getString("Научная фантастика");});

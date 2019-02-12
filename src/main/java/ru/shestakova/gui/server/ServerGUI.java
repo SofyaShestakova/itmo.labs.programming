@@ -22,6 +22,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -296,34 +297,30 @@ public class ServerGUI extends Application {
 
   @Override
   public void start(Stage primaryStage) throws SQLException {
-    stage = primaryStage;
+      stage = primaryStage;
 
-    final VBox rootNode = new VBox(createLoginBox());
-    VBox.setMargin(rootNode, DEFAULT_VIEW_MARGIN);
+      final VBox rootNode = new VBox (createLoginBox ( ));
+      VBox.setMargin (rootNode, DEFAULT_VIEW_MARGIN);
 
-    // Отрисовываем
-    primaryStage.setScene(new Scene(rootNode, INITIAL_WIDTH, INITIAL_HEIGHT));
-    primaryStage.setTitle(AUTH_WINDOW_TITLE);
-    primaryStage.setResizable(false);
-    primaryStage.setFullScreen(false);
-    primaryStage.centerOnScreen();
-    primaryStage.show();
+      // Отрисовываем
+      primaryStage.setScene (new Scene (rootNode, INITIAL_WIDTH, INITIAL_HEIGHT));
+      primaryStage.setTitle (AUTH_WINDOW_TITLE);
+      primaryStage.setResizable (false);
+      primaryStage.setFullScreen (false);
+      primaryStage.centerOnScreen ( );
+      primaryStage.show ( );
 
-    if (checkLoginAndPassword()) {
-      Scene collectionScene = createCollecitonControlsScene();
+      if (checkLoginAndPassword ( )) {
+          Scene collectionScene = createCollecitonControlsScene ( );
 
-      primaryStage.setTitle(AUTH_WINDOW_TITLE);
-      primaryStage.setScene(collectionScene);
-      primaryStage.setResizable(false);
-      primaryStage.setFullScreen(false);
-      primaryStage.centerOnScreen();
-      primaryStage.show();
-    }
-    if( !databaseClient.isTableExist ("BookCollection")
-       ){
-      databaseClient.createTable ("BookCollection",Book.class);
-    }
+          primaryStage.setTitle (AUTH_WINDOW_TITLE);
+          primaryStage.setScene (collectionScene);
+          primaryStage.setResizable (false);
+          primaryStage.setFullScreen (false);
+          primaryStage.centerOnScreen ( );
+          primaryStage.show ( );
 
+      }
   }
 
   private Book parseBook() {
@@ -333,7 +330,7 @@ public class ServerGUI extends Application {
     BookColor color = bookColorComboBox.getValue();
     BookGenre genre = bookGenreSpinner.getValue();
     String pagesStr = bookPagesAmountTextField.getText();
-    ZonedDateTime creationTime = ZonedDateTime.now ();
+    LocalDateTime creationTime = LocalDateTime.now ();
     if (name == null || author == null || pagesStr == null
         || name.isEmpty() || author.isEmpty() || pagesStr.isEmpty()
         || size == null || color == null || genre == null || genre == BookGenre.NONE ) {
@@ -416,6 +413,25 @@ public class ServerGUI extends Application {
                   BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
 //          chosenBookComponent.setColor(new Color(102, 102, 255));
         });
+    try{
+        if (!databaseClient.isTableExist ("BookCollection")
+                ) {
+
+            databaseClient.createTable ("BookCollection", Book.class);
+        } else {
+
+            databaseClient.readAllItems ("BookCollection", Book.class)
+                    .values ( )
+                    .stream ( )
+                    .forEach (book -> {
+                        if (book != null) {
+                            bookViewComponent.getCollection ().addBook (book);
+                        }
+                    });
+
+
+        }
+    } catch(SQLException ex){}
     bookViewComponent.updateComponent();
 
     mainBox.getChildren().addAll(menuBar, upperBox, bookViewComponent);

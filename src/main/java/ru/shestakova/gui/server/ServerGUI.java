@@ -219,7 +219,7 @@ public class ServerGUI extends Application {
       if (book != null) {
         api.getCollection().addBook(book);
         try {
-          databaseClient.createItem ("BookCollection",String.valueOf (book.hashCode ()),parseBook ());
+          databaseClient.createItem ("BookCollection",String.valueOf (book.hashCode ()),book);
         } catch (SQLException e) {
           e.printStackTrace ( );
         }

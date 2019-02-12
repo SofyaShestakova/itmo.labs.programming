@@ -61,7 +61,7 @@ public class JSONUtils {
       obj.put("height", book.getHeight());
       obj.put("width", book.getWidth());
       obj.put("pages", book.getPages());
-      obj.put("rgb", book.getColor().getRGB());
+      obj.put("rgb", book.getColor ().getRGB ());
       obj.put("genre", book.getGenre().getOrdinal());
       obj.put("creationTime", book.getCreationTime ());
     } catch (JSONException e) {

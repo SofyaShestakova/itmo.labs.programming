@@ -13,9 +13,9 @@ public class Book implements Serializable {
   private String name;
   private String author;
 
-  private int height;
-  private int  width;
-  private  int pages;
+  private Integer height;
+  private Integer width;
+  private  Integer pages;
 
 
   private Color color;
@@ -23,11 +23,11 @@ public class Book implements Serializable {
   private BookGenre genre;
 
 
-  public Book (String name, String author, int pages, BookSize size, BookColor color, BookGenre genre, ZonedDateTime creationTime) {
+  public Book (String name, String author, Integer pages, BookSize size, BookColor color, BookGenre genre, ZonedDateTime creationTime) {
     this(name, author, pages, size.getHeight(), size.getWidth(), color.getColor(), genre,creationTime);
   }
 
-  public Book(String name, String author, int pages, int height, int width,
+  public Book(String name, String author, Integer pages, Integer height, Integer width,
       Color color, BookGenre genre, ZonedDateTime creationTime) {
     this.name = name;
     this.author = author;

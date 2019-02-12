@@ -17,6 +17,7 @@ import ru.shestakova.server.ApplicationAPI;
 import ru.shestakova.server.ServerApplicationAPI;
 import ru.shestakova.server.ServerMain;
 
+import javax.swing.text.html.HTMLDocument;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
@@ -217,7 +219,7 @@ public class ServerGUI extends Application {
       if (book != null) {
         api.getCollection().addBook(book);
         try {
-          databaseClient.createItem ("BookCollection",String.valueOf (book.hashCode ()), book);
+          databaseClient.createItem ("BookCollection",String.valueOf (book.hashCode ()),parseBook ());
         } catch (SQLException e) {
           e.printStackTrace ( );
         }
@@ -236,7 +238,7 @@ public class ServerGUI extends Application {
       String pagesStr = bookPagesAmountTextField.getText();
       int pages;
       try {
-        databaseClient.deleteItem ("BookCollection","book.hashcode()");
+        databaseClient.deleteItem ("BookCollection",String.valueOf (hashCode ()));
       } catch (SQLException e) {
         e.printStackTrace ( );
       }

@@ -11,12 +11,11 @@ public enum BookGenre {
   SCIENCE_FICTION(2,() -> {return LabLocale.getInstance().getString("Научная фантастика");});
 
   private Supplier<String> gengeName;
-  private int ordinal;
+  private static  int ordinal;
 
 
   BookGenre(int ordinal,Supplier<String> gengeName) {
     this.gengeName = gengeName;
-    this.ordinal= ordinal;
   }
 
 
@@ -30,7 +29,7 @@ public enum BookGenre {
     return Stream.of (values () ).filter (genre -> genre.ordinal == ordinal).findFirst ().get ();
   }
 
-  public int getOrdinal() {
+  public  static int getOrdinal() {
     return ordinal;
   }
 

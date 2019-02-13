@@ -176,16 +176,16 @@ public class ServerGUI extends Application {
       try {
         pages = Integer.parseInt(pagesStr);
       } catch (NumberFormatException ex) {
-        createDialogWindow("Ошибка",
+        /*createDialogWindow("Ошибка",
             "Ошибка формата ввода. В поле \"Страницы\" нужно вводить натуральное число")
-            .showAndWait();
+            .showAndWait();*/
         return;
       }
 
       if (pages <= 0) {
-        createDialogWindow("Ошибка",
+        /*createDialogWindow("Ошибка",
             "Количество страниц в книге должно быть натуральным числом")
-            .showAndWait();
+            .showAndWait();*/
       }
 
       List<Book> filteredBooks = bookViewComponent.getCollection().getBooks().stream()
@@ -235,15 +235,9 @@ public class ServerGUI extends Application {
       BookSize size = bookSizeChoiceBox.getValue();
       BookColor color = bookColorComboBox.getValue();
       BookGenre genre = bookGenreSpinner.getValue();
-
       String pagesStr = bookPagesAmountTextField.getText();
       int pages;
-      try {
-        databaseClient.deleteItem ("BookCollection",String.valueOf (hashCode ()));
-      } catch (SQLException e) {
-        e.printStackTrace ( );
-      }
-
+/*
       try {
         pages = Integer.parseInt(pagesStr);
       } catch (NumberFormatException ex) {
@@ -252,13 +246,12 @@ public class ServerGUI extends Application {
             .showAndWait();
         return;
       }
-
       if (pages <= 0) {
         createDialogWindow("Ошибка",
             "Количество страниц в книге должно быть натуральным числом")
             .showAndWait();
       }
-
+      */
       List<Book> filteredBooks = bookViewComponent.getCollection().getBooks().stream()
           .filter(book -> ((name == null) || name.isEmpty() || name.equals(book.getName())))
           .filter(book -> ((author == null) || author.isEmpty() || author.equals(book.getAuthor())))
@@ -269,11 +262,25 @@ public class ServerGUI extends Application {
           .collect(Collectors.toList());
 
       filteredBooks.forEach(book -> api.removeOne(book));
+      try {
+        databaseClient.deleteItem ("BookCollection",String.valueOf (filteredBooks.hashCode ()));
+      } catch (SQLException e) {
+        e.printStackTrace ( );
+      }
     });
 
     addIfMaximumButton.setOnMouseClicked(event -> pool.submit(() -> {
       Book book = parseBook();
       api.addIfMax(book);
+
+        if(api.getCollection ().addBookIfMax (book) ) {
+          try {
+            databaseClient.createItem ("BookCollection", String.valueOf (book.hashCode ( )), book);
+          } catch (SQLException e) {
+            e.printStackTrace ( );
+          }
+        }
+
     }));
 
     addIfMinimumButton.setOnMouseClicked(event -> pool.submit(() -> {

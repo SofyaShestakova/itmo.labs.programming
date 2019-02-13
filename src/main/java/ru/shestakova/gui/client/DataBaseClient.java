@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -66,7 +67,7 @@ public class DataBaseClient<T> {
                                 type = "integer";
                             } else if (field.getType ( ) == Boolean.class) {
                                 type = "boolean";
-                            } else if (field.getType ( ) == ZonedDateTime.class) {
+                            } else if (field.getType ( ) == LocalDateTime.class) {
                                 type = "TIMESTAMP";
                             } else if (field.getType ( ) == Color.class) {
                                 type = "integer";
@@ -185,7 +186,7 @@ public class DataBaseClient<T> {
                                 field.set (item, resultSet.getInt (field.getName ( )));
                             } else if (field.getType ( ) == Boolean.class) {
                                 field.set (item, resultSet.getBoolean (field.getName ( )));
-                            } else if (field.getType ( ) == ZonedDateTime.class) {
+                            } else if (field.getType ( ) == LocalDateTime.class) {
                                 field.set (item, resultSet.getTimestamp (field.getName ( )).toLocalDateTime ( ));
                             } else if (field.getType ( ) == Color.class) {
                                 field.set (item, new Color (resultSet.getInt (field.getName ( ))));
@@ -241,8 +242,8 @@ public class DataBaseClient<T> {
             } else if (field.getType ( ) == BookGenre.class) {
                 BookGenre bookGenre =  (BookGenre) field.get (item);
                 value = String.valueOf (bookGenre.getOrdinal ( ));
-            } else if (field.getType ( ) == ZonedDateTime.class) {
-                ZonedDateTime date = (ZonedDateTime) field.get (item);
+            } else if (field.getType ( ) == LocalDateTime.class) {
+                LocalDateTime date = (LocalDateTime) field.get (item);
                 value = "to_timestamp('" + date.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss") )+ "', 'yyyy-mm-dd hh24:mi:ss')";
             } else if (field.getType ( ) == Color.class) {
                 Color color = (Color) field.get (item);

@@ -16,7 +16,8 @@ import java.util.Hashtable;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static ru.shestakova.model.BookGenre.getOrdinal;
+import static ru.shestakova.model.BookGenre.fromOrdinal;
+
 
 
 public class DataBaseClient<T> {
@@ -170,7 +171,7 @@ public class DataBaseClient<T> {
         }
     }
 
-    private static Object getPopulatedItem(Class itemClass, ResultSet resultSet) {
+    private static Object getPopulatedItem(Class itemClass, ResultSet resultSet)  throws IllegalArgumentException{
         try {
             Object item = itemClass.newInstance ( );
             Arrays
@@ -190,9 +191,9 @@ public class DataBaseClient<T> {
                                 field.set (item, new Color (resultSet.getInt (field.getName ( ))));
                             }
                             else if (field.getType ( ) == BookGenre.class) {
-                                field.set (item, resultSet.getInt(field.getName ()));
+                                field.set (item ,fromOrdinal (resultSet.getInt(field.getName ())));
                             }
-                            //else if (field.getType() == BookColor.class) {
+                            //else if (field.getType() == BookColor.clss) {
                             // field.set(item, new BookColor(resultSet.getString(field.getName())));}
                             else if (field.getType ( ) == String.class) {
                                 field.set (item, resultSet.getString (field.getName ( )));
@@ -238,7 +239,8 @@ public class DataBaseClient<T> {
             } else if (field.getType ( ) == String.class) {
                 value = "'" + field.get (item).toString ( ) + "'";
             } else if (field.getType ( ) == BookGenre.class) {
-                value = String.valueOf (getOrdinal ( ));
+                BookGenre bookGenre =  (BookGenre) field.get (item);
+                value = String.valueOf (bookGenre.getOrdinal ( ));
             } else if (field.getType ( ) == ZonedDateTime.class) {
                 ZonedDateTime date = (ZonedDateTime) field.get (item);
                 value = "to_timestamp('" + date.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss") )+ "', 'yyyy-mm-dd hh24:mi:ss')";

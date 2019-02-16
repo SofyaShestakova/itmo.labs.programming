@@ -46,8 +46,6 @@ public class ServerGUI extends Application {
 
     private ForkJoinPool pool = new ForkJoinPool ( );
     private ApplicationAPI api;
-    private Collection collection;
-    private TableView<Book> collectionTable;
 
     private BookComponent chosenBookComponent;
 
@@ -71,10 +69,7 @@ public class ServerGUI extends Application {
     private Button deleteButton;
     private Button addIfMaximumButton;
     private Button addIfMinimumButton;
-    private Button deleteFirstButton;
-    private Button deleteLastButton;
-    private Button deleteGreaterButton;
-    private Button deleteLessButton;
+
 
     private BookViewComponent bookViewComponent;
     private Button loginButton;
@@ -155,10 +150,7 @@ public class ServerGUI extends Application {
         deleteButton = new Button ("Удалить");
         addIfMaximumButton = new Button ("Добавить е/макс");
         addIfMinimumButton = new Button ("Добавить е/мин");
-        deleteFirstButton = new Button ("Удалить первую");
-        deleteLastButton = new Button ("Удалить последнюю");
-        deleteGreaterButton = new Button ("Удалить бóльшие");
-        deleteLessButton = new Button ("Удалить меньшие");
+
 
         filterButton.setOnMouseClicked (event -> {
             String name = bookNameTextField.getText ( );
@@ -216,7 +208,7 @@ public class ServerGUI extends Application {
             if (book != null) {
                 api.getCollection ( ).addBook (book);
                 try {
-                    databaseClient.createItem ("BookCollection", String.valueOf (book.hashCode ( )), book);
+                    databaseClient.createItem ("BookCollection",  String.valueOf (book.hashCode ( )), book);
                 } catch (SQLException e) {
                     e.printStackTrace ( );
                 }
@@ -267,79 +259,63 @@ public class ServerGUI extends Application {
 
         addIfMaximumButton.setOnMouseClicked (event -> pool.submit (() -> {
             Book book = parseBook ( );
-            if (book != null && api.getCollection ().addBookIfMax (book)) {
-                    try {
-                        databaseClient.createItem ("BookCollection", String.valueOf (book.hashCode ( )), book);
-                    } catch (SQLException e) {
-                        e.printStackTrace ( );
-                    }
-            }
-
-                }));
-
-
-                addIfMinimumButton.setOnMouseClicked (event -> pool.submit (() -> {
-                    Book book = parseBook ( );
-                    if (book != null && api.getCollection ().addBookIfMin (book)) {
-                            try {
-                                databaseClient.createItem ("BookCollection", String.valueOf (book.hashCode ( )), book);
-                            } catch (SQLException e) {
-                                e.printStackTrace ( );
-                            }
-                        }
-                }));
-
-                deleteFirstButton.setOnMouseClicked (event -> pool.submit (() -> {
-                            try {
-                                databaseClient.deleteItem ("BookCollection", String.valueOf (api.getCollection ( ).getBooks ( ).getFirst ( ).hashCode ( )));
-                                api.removeFirst ( );
-                            } catch (SQLException e) {
-                                e.printStackTrace ( );
-                            }
-                        }
-
-                ));
-
-                deleteLastButton.setOnMouseClicked (event -> pool.submit (() -> api.removeLast ( )));
-
-                deleteGreaterButton.setOnMouseClicked (
-                        event -> pool.submit (() -> api.removeGreater (chosenBookComponent.getBook ( ))));
-
-                deleteLessButton.setOnMouseClicked (
-                        event -> pool.submit (() -> api.removeLower (chosenBookComponent.getBook ( ))));
-
-            }
-
-
-            @Override
-            public void start (Stage primaryStage) throws SQLException {
-                stage = primaryStage;
-
-                final VBox rootNode = new VBox (createLoginBox ( ));
-                VBox.setMargin (rootNode, DEFAULT_VIEW_MARGIN);
-
-                // Отрисовываем
-                primaryStage.setScene (new Scene (rootNode, INITIAL_WIDTH, INITIAL_HEIGHT));
-                primaryStage.setTitle (AUTH_WINDOW_TITLE);
-                primaryStage.setResizable (false);
-                primaryStage.setFullScreen (false);
-                primaryStage.centerOnScreen ( );
-                primaryStage.show ( );
-
-                if (checkLoginAndPassword ( )) {
-                    Scene collectionScene = createCollecitonControlsScene ( );
-
-                    primaryStage.setTitle (AUTH_WINDOW_TITLE);
-                    primaryStage.setScene (collectionScene);
-                    primaryStage.setResizable (false);
-                    primaryStage.setFullScreen (false);
-                    primaryStage.centerOnScreen ( );
-                    primaryStage.show ( );
-
+            if (book != null && api.getCollection ( ).addBookIfMax (book)) {
+                try {
+                    databaseClient.createItem ("BookCollection", String.valueOf (book.hashCode ( )), book);
+                } catch (SQLException e) {
+                    e.printStackTrace ( );
                 }
             }
 
-        private Book parseBook () {
+        }));
+
+
+        addIfMinimumButton.setOnMouseClicked (event -> pool.submit (() -> {
+            Book book = parseBook ( );
+            if (book != null && api.getCollection ( ).addBookIfMin (book)) {
+                try {
+                    databaseClient.createItem ("BookCollection", String.valueOf (book.hashCode ( )), book);
+                } catch (SQLException e) {
+                    e.printStackTrace ( );
+                }
+            }
+        }));
+
+
+
+
+    }
+
+
+    @Override
+    public void start(Stage primaryStage) throws SQLException {
+        stage = primaryStage;
+
+        final VBox rootNode = new VBox (createLoginBox ( ));
+        VBox.setMargin (rootNode, DEFAULT_VIEW_MARGIN);
+
+        // Отрисовываем
+        primaryStage.setScene (new Scene (rootNode, INITIAL_WIDTH, INITIAL_HEIGHT));
+        primaryStage.setTitle (AUTH_WINDOW_TITLE);
+        primaryStage.setResizable (false);
+        primaryStage.setFullScreen (false);
+        primaryStage.centerOnScreen ( );
+        primaryStage.show ( );
+
+        if (checkLoginAndPassword ( )) {
+            Scene collectionScene = createCollecitonControlsScene ( );
+
+            primaryStage.setTitle (AUTH_WINDOW_TITLE);
+            primaryStage.setScene (collectionScene);
+            primaryStage.setResizable (false);
+            primaryStage.setFullScreen (false);
+            primaryStage.centerOnScreen ( );
+            primaryStage.show ( );
+
+        }
+    }
+
+    private Book parseBook() {
         String name = bookNameTextField.getText ( );
         String author = bookAuthorTextField.getText ( );
         BookSize size = bookSizeChoiceBox.getValue ( );
@@ -363,7 +339,7 @@ public class ServerGUI extends Application {
         return new Book (name, author, pages, size, color, genre, creationTime);
     }
 
-        private Scene createCollecitonControlsScene () {
+    private Scene createCollecitonControlsScene() {
 
         VBox mainBox = new VBox ( );
 
@@ -375,17 +351,12 @@ public class ServerGUI extends Application {
     /*    Control buttons box definition */
         VBox controlButtonsBox = new VBox ( );
         controlButtonsBox.getChildren ( )
-                .addAll (addButton, deleteButton, addIfMaximumButton, addIfMinimumButton, deleteFirstButton,
-                        deleteLastButton, deleteGreaterButton, deleteLessButton);
+                .addAll (addButton, deleteButton, addIfMaximumButton, addIfMinimumButton);
 
-        VBox.setMargin (addButton, DEFAULT_MARGIN);
+        VBox.setMargin (addButton,new Insets (55,10,0,10));
         VBox.setMargin (deleteButton, DEFAULT_MARGIN);
         VBox.setMargin (addIfMaximumButton, DEFAULT_MARGIN);
         VBox.setMargin (addIfMinimumButton, DEFAULT_MARGIN);
-        VBox.setMargin (deleteFirstButton, DEFAULT_MARGIN);
-        VBox.setMargin (deleteLastButton, DEFAULT_MARGIN);
-        VBox.setMargin (deleteGreaterButton, DEFAULT_MARGIN);
-        VBox.setMargin (deleteLessButton, DEFAULT_MARGIN);
 
     /*    Control fields vertical box definition */
         VBox controlFieldsVerticalBox = new VBox ( );
@@ -459,7 +430,7 @@ public class ServerGUI extends Application {
         return new Scene (mainBox);
     }
 
-        private MenuBar createMenuBar () {
+    private MenuBar createMenuBar() {
         // Объявление пунктов контекстного меню
         final MenuBar menuBar = new MenuBar ( );
 
@@ -506,7 +477,7 @@ public class ServerGUI extends Application {
         return menuBar;
     }
 
-        private GridPane createCriteriasGrid () {
+    private GridPane createCriteriasGrid() {
         GridPane grid = new GridPane ( );
 //    grid.setMinSize(400, 200);
         grid.setPadding (new Insets (10, 10, 10, 10));
@@ -530,7 +501,7 @@ public class ServerGUI extends Application {
         return grid;
     }
 
-        private VBox createLoginBox () {
+    private VBox createLoginBox() {
         final VBox loginBox = new VBox ( );
         loginBox.getChildren ( ).addAll (usernameInput, userPasswordInput, loginButton);
 
@@ -551,7 +522,7 @@ public class ServerGUI extends Application {
         return loginBox;
     }
 
-        public boolean checkLoginAndPassword () {
+    public boolean checkLoginAndPassword() {
         String user = usernameInput.getText ( );
         String password = userPasswordInput.getText ( );
 
@@ -580,4 +551,4 @@ public class ServerGUI extends Application {
 
         return loginSuccess;
     }
-    }
+}

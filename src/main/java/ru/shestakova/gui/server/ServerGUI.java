@@ -47,6 +47,7 @@ public class ServerGUI extends Application {
     private ForkJoinPool pool = new ForkJoinPool ( );
     private ApplicationAPI api;
 
+
     private BookComponent chosenBookComponent;
 
     /* AUTH ELEMENTS */
@@ -208,7 +209,7 @@ public class ServerGUI extends Application {
             if (book != null) {
                 api.getCollection ( ).addBook (book);
                 try {
-                    databaseClient.createItem ("BookCollection",  String.valueOf (book.hashCode ( )), book);
+                    databaseClient.createItem ("BookCollection", String.valueOf (book.hashCode ()), book);
                 } catch (SQLException e) {
                     e.printStackTrace ( );
                 }
@@ -251,7 +252,7 @@ public class ServerGUI extends Application {
 
             filteredBooks.forEach (book -> api.removeOne (book));
             try {
-                databaseClient.deleteItem ("BookCollection", String.valueOf (chosenBookComponent.getBook ( ).hashCode ( )));
+                databaseClient.deleteItem ("BookCollection",  String.valueOf (chosenBookComponent.getBook ( ).hashCode ( )));
             } catch (SQLException e) {
                 e.printStackTrace ( );
             }
@@ -460,17 +461,9 @@ public class ServerGUI extends Application {
         // Load action
         loadOption.setOnAction ((event) -> pool.submit (() -> {
             System.out.println ("Loading collection");
-      /*FileChooser chooser = new FileChooser();
-      chooser.setTitle("Load collection File");
-
-      File file = fileChooser.showOpenDialog(stage);
-
-      if (file != null) {
-        api.load(file.getAbsolutePath());
-      }*/
-
+            
             api.load (null);
-        }));
+    }));
 
         exitOption.setOnAction ((event) -> Platform.exit ( ));
 

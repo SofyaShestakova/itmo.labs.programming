@@ -280,16 +280,13 @@ public class ServerGUI extends Application {
 
                 addIfMinimumButton.setOnMouseClicked (event -> pool.submit (() -> {
                     Book book = parseBook ( );
-                    if (book != null) {
-                        api.addIfMin (book);
-                        if (api.getCollection ( ).addBookIfMin (book)) {
+                    if (book != null && api.getCollection ().addBookIfMin (book)) {
                             try {
                                 databaseClient.createItem ("BookCollection", String.valueOf (book.hashCode ( )), book);
                             } catch (SQLException e) {
                                 e.printStackTrace ( );
                             }
                         }
-                    }
                 }));
 
                 deleteFirstButton.setOnMouseClicked (event -> pool.submit (() -> {

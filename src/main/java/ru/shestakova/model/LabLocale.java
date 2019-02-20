@@ -20,7 +20,7 @@ public class LabLocale {
     private ResourceBundle resourceBundle = null;
     private List<LabLocaleUpdateHandler> labLocaleUpdateHandlers = null;
 
-    private LabLocale() {
+    public LabLocale() {
         currentLocale = Locale.getDefault ( );
         resourceBundle = ResourceBundle.getBundle ("ru.shestakova.model.SyntaxBundle", currentLocale);
         labLocaleUpdateHandlers = new ArrayList<> ( );

@@ -461,7 +461,7 @@ public class ServerGUI extends Application {
         // Load action
         loadOption.setOnAction ((event) -> pool.submit (() -> {
             System.out.println ("Loading collection");
-            
+
             api.load (null);
     }));
 

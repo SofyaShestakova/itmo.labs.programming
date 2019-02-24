@@ -24,8 +24,8 @@ public class DataBaseClient<T> {
     private final static String HOST = "localhost";
     private final static String ENDPOINT = "jdbc:postgresql://" + HOST + ":5432/studs";
     private final static String DRIVER = "org.postgresql.Driver";
-    private final static String USER = "s244705"; //введи свои логин и пароль от гелиоса
-    private final static String PASSWORD = "unn821";
+    private final static String USER = ""; //введи свои логин и пароль от гелиоса
+    private final static String PASSWORD = "";
     private Connection connection = null;
     private static DataBaseClient instance = null;
 

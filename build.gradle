@@ -10,10 +10,10 @@ repositories {
     mavenCentral()
 }
 
-mainClassName = 'ru.shestakova.server.ServerMain'
-//mainClassName = 'ru.shestakova.client.ClientMain'
+//mainClassName = 'ru.shestakova.server.gui.ServerGUI'
+mainClassName = 'ru.shestakova.client.gui.ClientGUI'
 jar {
-    baseName = 'Server'
+    baseName = 'Client'
     version = '0.1'
     manifest {
         attributes "Main-Class": "$mainClassName"

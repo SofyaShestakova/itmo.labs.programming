@@ -1,4 +1,4 @@
-package ru.shestakova.gui.client;
+package ru.shestakova.utils;
 
 import ru.shestakova.model.BookGenre;
 import ru.shestakova.model.SqlHelper;
@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -23,10 +22,10 @@ import static ru.shestakova.model.BookGenre.fromOrdinal;
 
 public class DataBaseClient<T> {
     private final static String HOST = "localhost";
-    private final static String ENDPOINT = "jdbc:postgresql://" + HOST + ":5432/lab8";
+    private final static String ENDPOINT = "jdbc:postgresql://" + HOST + ":5432/studs";
     private final static String DRIVER = "org.postgresql.Driver";
-    private final static String USER = "postgres"; //введи свои логин и пароль от гелиоса
-    private final static String PASSWORD = "";
+    private final static String USER = "s244705"; //введи свои логин и пароль от гелиоса
+    private final static String PASSWORD = "unn821";
     private Connection connection = null;
     private static DataBaseClient instance = null;
 

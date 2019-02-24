@@ -49,7 +49,6 @@ public class LabLocale {
         turkishLanguageOption.setOnAction (event -> setLocale(new Locale("tu")));
         lithuanianLanguageOption.setOnAction (event -> setLocale(new Locale("li")));
         spanishLanguageOption.setOnAction (event -> setLocale(new Locale("sp")));
-
         return menuBar;
     }
     public void addLocaleChangeHandler(LabLocaleUpdateHandler labLocaleUpdateHandler) {

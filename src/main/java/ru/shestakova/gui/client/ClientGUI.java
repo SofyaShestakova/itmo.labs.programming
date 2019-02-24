@@ -284,6 +284,7 @@ public class ClientGUI extends Application {
         ));
         labLocale.addLocaleChangeHandler(bundle -> {
             label.setText(bundle.getString("Генерировать значение:"));
+            Platform.runLater (() -> bookViewComponent.updateComponent ( ));
         });
 
         return generatingView;

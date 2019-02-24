@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import ru.shestakova.gui.client.DataBaseClient;
+import ru.shestakova.utils.DataBaseClient;
 import ru.shestakova.model.*;
 import ru.shestakova.server.ApplicationAPI;
 import ru.shestakova.server.ServerApplicationAPI;

@@ -291,10 +291,8 @@ public class ServerGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws SQLException {
         stage = primaryStage;
-
         final VBox rootNode = new VBox (createLoginBox ( ));
         VBox.setMargin (rootNode, DEFAULT_VIEW_MARGIN);
-
         // Отрисовываем
         primaryStage.setScene (new Scene (rootNode, INITIAL_WIDTH, INITIAL_HEIGHT));
         primaryStage.setTitle (AUTH_WINDOW_TITLE);
